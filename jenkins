@@ -1,0 +1,45 @@
+node {
+
+  def app
+
+  stage('HelloWorld') {
+
+    echo 'Hello World'
+
+  }
+
+  stage("clone Repository") {
+
+    checkout scm
+
+  }
+
+  stage('Building image') {
+
+    app = docker.build("ine12376857/samplerepo");
+
+  }
+
+  stage('test image') {
+
+    app.inside {
+
+       sh "echo test image hurray"
+
+    }
+
+  }
+
+  stage('push image') {
+
+  // docker.image("ishtiaq/ishtiaq").run()
+
+    docker.withRegistry('', "mani-dockerID") {
+
+      app.push();
+
+    }
+
+  }
+
+}
